@@ -44,7 +44,7 @@ public class AgromachineryScrapingApplication {
                 "https://www.agrofy.com.br/trator-john-deere-8320r-204540.html",
                 "https://www.tratoresecolheitadeiras.com.br/veiculo/uberlandia/mg/plataforma-colheitadeira/gts/flexer-xs-45/2023/45-pes/draper/triamaq-tratores/1028839",
                 "https://www.tratoresecolheitadeiras.com.br/veiculo/fernandopolis/sp/colheitadeira/john-deere/john-deere-s550/2022/-rotor-axial/cabine-cabinado/agro-novaes-maquinas-agricolas/1279673",
-                "https://www.mercadomaquinas.com.br/anuncio/236624-retro-escavadeira-caterpillar-416e-2015-carlopolis-pr",
+                "https://www.mercadomaquinas.com.br/anuncio/247160-kombi-2013-2014-2013-franco-da-rocha-sp",
                 "https://www.mercadomaquinas.com.br/anuncio/236623-mini-escavadeira-bobcat-e27z-2019-sete-lagoas-mg"
             };
 
