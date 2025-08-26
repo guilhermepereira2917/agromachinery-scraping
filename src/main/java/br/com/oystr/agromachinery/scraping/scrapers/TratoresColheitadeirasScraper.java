@@ -3,6 +3,7 @@ package br.com.oystr.agromachinery.scraping.scrapers;
 import br.com.oystr.agromachinery.scraping.Bot;
 import br.com.oystr.agromachinery.scraping.ContractType;
 import br.com.oystr.agromachinery.scraping.Machine;
+import br.com.oystr.agromachinery.scraping.util.PriceParser;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Attribute;
 import org.jsoup.nodes.Document;
@@ -13,9 +14,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.text.NumberFormat;
-import java.text.ParseException;
-import java.util.Locale;
 import java.util.Optional;
 
 
@@ -44,7 +42,7 @@ public class TratoresColheitadeirasScraper implements Bot {
             String city = addressNode.map(Element::lastChild).map(Node::nodeValue).map(String::trim).orElse(null);
 
             Optional<String> priceString = findDetail(document, "Preço");
-            BigDecimal price = priceString.flatMap(this::parsePrice).orElse(null);
+            BigDecimal price = priceString.flatMap(PriceParser::parsePrice).orElse(null);
 
             String photo = Optional.ofNullable(document.selectFirst("[data-image]")).map(e -> e.attribute("data-image")).map(Attribute::getValue).orElse(null);
 
@@ -63,21 +61,5 @@ public class TratoresColheitadeirasScraper implements Bot {
 
     private Optional<String> findDetail(Document document, String label) {
         return Optional.ofNullable(document.selectFirst("p:containsOwn(" + label + ") strong")).map(Element::text);
-    }
-
-    private Optional<BigDecimal> parsePrice(String priceString) {
-        if (priceString == null || priceString.isBlank()) {
-            return Optional.empty();
-        }
-
-        NumberFormat format = NumberFormat.getInstance(Locale.of("pt", "BR"));
-        String cleanedPriceString = priceString.replace("R$ ", "").replace(" ", "");
-
-        try {
-            Number number = format.parse(cleanedPriceString);
-            return Optional.of(BigDecimal.valueOf(number.doubleValue()));
-        } catch (ParseException e) {
-            return Optional.empty();
-        }
     }
 }
