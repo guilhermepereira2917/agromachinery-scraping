@@ -16,7 +16,19 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.Optional;
 
-
+/**
+ * A web scraper implementation for extracting machine details from
+ * <a href="https://www.tratoresecolheitadeiras.com.br">Tratores e Colheitadeiras</a> advertisements.
+ * <p>
+ * This scraper fetches details from the target page and converts them
+ * into a {@link Machine} object.
+ * </p>
+ *
+ * <p>It uses {@link Jsoup} for HTML parsing.</p>
+ *
+ * <p>Implements {@link Bot} to provide a uniform interface for fetching and determining
+ * support for URLs.</p>
+ */
 @Service
 public class TratoresColheitadeirasScraper implements Bot {
 
