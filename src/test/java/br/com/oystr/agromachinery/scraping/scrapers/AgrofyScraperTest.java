@@ -25,7 +25,13 @@ class AgrofyScraperTest {
 
     @BeforeEach
     void setUp() {
-        agrofyScraper = new AgrofyScraper(new ObjectMapper());
+        ScraperProperties props = new ScraperProperties();
+        props.setUserAgent("Fake-UA");
+        props.setTimeout(5000);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        agrofyScraper = new AgrofyScraper(props, objectMapper);
     }
 
     @Test

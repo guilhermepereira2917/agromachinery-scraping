@@ -19,19 +19,19 @@ import java.util.Optional;
 @Service
 public class AgrofyScraper implements Bot {
 
+    private final ScraperProperties scraperProperties;
     private final ObjectMapper objectMapper;
-    private static final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36";
-    private static final int TIMEOUT = 10_000;
     private static final Logger log = LoggerFactory.getLogger(AgrofyScraper.class);
 
-    public AgrofyScraper(ObjectMapper objectMapper) {
+    public AgrofyScraper(ScraperProperties scraperProperties, ObjectMapper objectMapper) {
+        this.scraperProperties = scraperProperties;
         this.objectMapper = objectMapper;
     }
 
     @Override
     public Machine fetch(String url) {
         try {
-            Document document = Jsoup.connect(url).userAgent(USER_AGENT).timeout(TIMEOUT).get();
+            Document document = Jsoup.connect(url).userAgent(scraperProperties.getUserAgent()).timeout(scraperProperties.getTimeout()).get();
             Element scriptTag = document.selectFirst("script#__NEXT_DATA__");
             String json = scriptTag.html();
 
