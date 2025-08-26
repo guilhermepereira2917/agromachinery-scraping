@@ -2,6 +2,14 @@ package br.com.oystr.agromachinery.scraping;
 
 import java.math.BigDecimal;
 
+/**
+ * Represents a machine listing fetched from a web page.
+ * <p>
+ * This class contains details such as the model, make, year,
+ * hours of use, location, price, image URL, and the page URL
+ * where the machine is listed.
+ * </p>
+ */
 public class Machine {
     private String model;
     private ContractType contractType;

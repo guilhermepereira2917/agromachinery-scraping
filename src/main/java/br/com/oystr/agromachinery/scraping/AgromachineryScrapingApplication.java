@@ -7,6 +7,20 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+/**
+ * Main Spring Boot application class for the Agromachinery scraping tool.
+ *
+ * <p>
+ * This application fetches machine data from multiple agricultural websites
+ * using scrapers provided by {@link BotFactory}. The URLs to be scraped are
+ * defined in the {@link CommandLineRunner} bean.
+ * </p>
+ *
+ * <p>
+ * The {@link CommandLineRunner} iterates through a set of URLs, selects
+ * the appropriate scraper, and logs the fetched {@link Machine} objects.
+ * </p>
+ */
 @SpringBootApplication
 public class AgromachineryScrapingApplication {
 
@@ -29,7 +43,7 @@ public class AgromachineryScrapingApplication {
                 "https://www.agrofy.com.br/trator-magnum-315.html",
                 "https://www.agrofy.com.br/trator-john-deere-8320r-204540.html",
                 "https://www.tratoresecolheitadeiras.com.br/veiculo/uberlandia/mg/plataforma-colheitadeira/gts/flexer-xs-45/2023/45-pes/draper/triamaq-tratores/1028839",
-                "https://www.tratoresecolheitadeiras.com.br/veiculo/uberlandia/mg/plataforma-colheitadeira/gts/produttiva-1250/2022/caracol/12-linhas/triamaq-tratores/994257",
+                "https://www.tratoresecolheitadeiras.com.br/veiculo/fernandopolis/sp/colheitadeira/john-deere/john-deere-s550/2022/-rotor-axial/cabine-cabinado/agro-novaes-maquinas-agricolas/1279673",
                 "https://www.mercadomaquinas.com.br/anuncio/236624-retro-escavadeira-caterpillar-416e-2015-carlopolis-pr",
                 "https://www.mercadomaquinas.com.br/anuncio/236623-mini-escavadeira-bobcat-e27z-2019-sete-lagoas-mg"
             };

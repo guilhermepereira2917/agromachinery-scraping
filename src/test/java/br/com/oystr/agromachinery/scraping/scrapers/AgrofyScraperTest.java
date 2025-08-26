@@ -20,6 +20,15 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+/**
+ * Unit tests for {@link AgrofyScraper}.
+ *
+ * <p>
+ * Tests the scraping logic for Agrofy product pages, including URL support
+ * detection and parsing of product JSON data. Uses Mockito to mock Jsoup
+ * HTTP calls and provide a fake JSON payload.
+ * </p>
+ */
 class AgrofyScraperTest {
     private AgrofyScraper agrofyScraper;
 
@@ -40,6 +49,10 @@ class AgrofyScraperTest {
         assertFalse(agrofyScraper.supports("https://www.mercadomaquinas.com.br/..."));
     }
 
+    /**
+     * Tests the fetch method using a fake JSON file.
+     * Ensures all fields of {@link Machine} are parsed correctly.
+     */
     @Test
     void testFetch() throws Exception {
         Document mockDocument = mock(Document.class);

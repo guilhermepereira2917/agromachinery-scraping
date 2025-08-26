@@ -16,6 +16,19 @@ import java.math.BigDecimal;
 import java.util.Iterator;
 import java.util.Optional;
 
+/**
+ * Scraper implementation for <a href="https://www.agrofy.com.br">Agrofy</a> machinery listings.
+ *
+ * <p>This scraper behaves differently than traditional HTML scrapers because Agrofy uses a
+ * Next.js frontend. When fetching the page with Jsoup, the initial HTML does not contain the
+ * fully rendered content because Next.js hydrates the page on the client side. Therefore, instead
+ * of scraping the HTML directly, this scraper locates the JSON data embedded inside the
+ * {@code <script id="__NEXT_DATA__">} tag, which contains all the product details needed to
+ * construct a {@link Machine} object.</p>
+ *
+ * <p>Implements {@link Bot} to provide a uniform interface for fetching and determining
+ * support for URLs.</p>
+ */
 @Service
 public class AgrofyScraper implements Bot {
 
