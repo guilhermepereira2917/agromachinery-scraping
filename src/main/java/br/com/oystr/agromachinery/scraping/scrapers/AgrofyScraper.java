@@ -1,12 +1,11 @@
 package br.com.oystr.agromachinery.scraping.scrapers;
 
-import br.com.oystr.agromachinery.scraping.ContractType;
-import br.com.oystr.agromachinery.scraping.Machine;
-import br.com.oystr.agromachinery.scraping.Bot;
+import br.com.oystr.agromachinery.scraping.model.ContractType;
+import br.com.oystr.agromachinery.scraping.model.Machine;
+import br.com.oystr.agromachinery.scraping.bot.Bot;
 import br.com.oystr.agromachinery.scraping.util.JsoupWrapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.slf4j.Logger;

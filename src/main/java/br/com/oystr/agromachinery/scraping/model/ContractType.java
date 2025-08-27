@@ -1,4 +1,4 @@
-package br.com.oystr.agromachinery.scraping;
+package br.com.oystr.agromachinery.scraping.model;
 
 /**
  * Represents the type of contract for a machine listing.

@@ -1,8 +1,8 @@
 package br.com.oystr.agromachinery.scraping.scrapers;
 
-import br.com.oystr.agromachinery.scraping.Bot;
-import br.com.oystr.agromachinery.scraping.ContractType;
-import br.com.oystr.agromachinery.scraping.Machine;
+import br.com.oystr.agromachinery.scraping.bot.Bot;
+import br.com.oystr.agromachinery.scraping.model.ContractType;
+import br.com.oystr.agromachinery.scraping.model.Machine;
 import br.com.oystr.agromachinery.scraping.util.JsoupWrapper;
 import br.com.oystr.agromachinery.scraping.util.PriceParser;
 import org.jsoup.Jsoup;

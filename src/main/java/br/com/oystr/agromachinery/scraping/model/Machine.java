@@ -1,4 +1,4 @@
-package br.com.oystr.agromachinery.scraping;
+package br.com.oystr.agromachinery.scraping.model;
 
 import java.math.BigDecimal;
 

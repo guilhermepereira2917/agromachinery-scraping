@@ -1,5 +1,7 @@
 package br.com.oystr.agromachinery.scraping;
 
+import br.com.oystr.agromachinery.scraping.bot.BotFactory;
+import br.com.oystr.agromachinery.scraping.model.Machine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;

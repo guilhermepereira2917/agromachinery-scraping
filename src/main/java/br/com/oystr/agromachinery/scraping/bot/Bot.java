@@ -1,4 +1,6 @@
-package br.com.oystr.agromachinery.scraping;
+package br.com.oystr.agromachinery.scraping.bot;
+
+import br.com.oystr.agromachinery.scraping.model.Machine;
 
 /**
  * Represents a web scraper (bot) capable of fetching machine data

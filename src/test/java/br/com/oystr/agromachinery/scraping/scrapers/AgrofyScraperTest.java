@@ -1,7 +1,7 @@
 package br.com.oystr.agromachinery.scraping.scrapers;
 
-import br.com.oystr.agromachinery.scraping.ContractType;
-import br.com.oystr.agromachinery.scraping.Machine;
+import br.com.oystr.agromachinery.scraping.model.ContractType;
+import br.com.oystr.agromachinery.scraping.model.Machine;
 import br.com.oystr.agromachinery.scraping.util.JsoupWrapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jsoup.nodes.Document;
