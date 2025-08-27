@@ -45,7 +45,10 @@ public class TratoresColheitadeirasScraper implements Bot {
         try {
             Document document = jsoupWrapper.fetch(url);
 
-            String model = Optional.ofNullable(document.selectFirst(".product-single__title")).map(Element::text).orElse(null);
+            String model = Optional.ofNullable(document.selectFirst(".product-single__title"))
+                .map(Element::text)
+                .orElse(null);
+
             ContractType contractType = ContractType.SALE;
             String make = findDetail(document, "Marca").orElse(null);
             Integer year = findDetail(document, "Ano de Fabricação").map(Integer::parseInt).orElse(null);
@@ -57,7 +60,10 @@ public class TratoresColheitadeirasScraper implements Bot {
             Optional<String> priceString = findDetail(document, "Preço");
             BigDecimal price = priceString.flatMap(PriceParser::parsePrice).orElse(null);
 
-            String photo = Optional.ofNullable(document.selectFirst("[data-image]")).map(e -> e.attribute("data-image")).map(Attribute::getValue).orElse(null);
+            String photo = Optional.ofNullable(document.selectFirst("[data-image]"))
+                .map(e -> e.attribute("data-image"))
+                .map(Attribute::getValue)
+                .orElse(null);
 
             return new Machine(model, contractType, make, year, workedHours, city, price, photo, url);
         } catch (Exception e) {
@@ -73,6 +79,7 @@ public class TratoresColheitadeirasScraper implements Bot {
     }
 
     private Optional<String> findDetail(Document document, String label) {
-        return Optional.ofNullable(document.selectFirst("p:containsOwn(" + label + ") strong")).map(Element::text);
+        return Optional.ofNullable(document.selectFirst("p:containsOwn(" + label + ") strong"))
+            .map(Element::text);
     }
 }
