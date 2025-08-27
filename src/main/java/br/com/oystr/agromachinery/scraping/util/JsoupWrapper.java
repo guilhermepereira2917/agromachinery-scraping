@@ -1,8 +1,8 @@
 package br.com.oystr.agromachinery.scraping.util;
 
-import br.com.oystr.agromachinery.scraping.scrapers.ScraperProperties;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -16,17 +16,17 @@ import java.io.IOException;
  */
 @Service
 public class JsoupWrapper {
-    private final ScraperProperties scraperProperties;
+    @Value("${scraper.user-agent}")
+    private String userAgent;
 
-    public JsoupWrapper(ScraperProperties scraperProperties) {
-        this.scraperProperties = scraperProperties;
-    }
+    @Value("${scraper.timeout}")
+    private int timeout;
 
     /**
      * Fetches and parses an HTML document from the given URL using {@link Jsoup}.
      * <p>
-     * The request uses the default User-Agent and timeout configured in
-     * {@link ScraperProperties}. This ensures consistent behavior across all scrapers.
+     * The request uses the configured User-Agent and timeout from application properties,
+     * ensuring consistent and configurable behavior across all scrapers.
      * </p>
      *
      * @param url the URL of the web page to fetch
@@ -35,8 +35,8 @@ public class JsoupWrapper {
      */
     public Document fetch(String url) throws IOException {
         return Jsoup.connect(url)
-            .userAgent(scraperProperties.getUserAgent())
-            .timeout(scraperProperties.getTimeout())
+            .userAgent(userAgent)
+            .timeout(timeout)
             .get();
     }
 }
