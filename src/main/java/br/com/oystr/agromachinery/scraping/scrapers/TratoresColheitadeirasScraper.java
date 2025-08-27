@@ -3,6 +3,7 @@ package br.com.oystr.agromachinery.scraping.scrapers;
 import br.com.oystr.agromachinery.scraping.Bot;
 import br.com.oystr.agromachinery.scraping.ContractType;
 import br.com.oystr.agromachinery.scraping.Machine;
+import br.com.oystr.agromachinery.scraping.util.JsoupWrapper;
 import br.com.oystr.agromachinery.scraping.util.PriceParser;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Attribute;
@@ -32,17 +33,17 @@ import java.util.Optional;
 @Service
 public class TratoresColheitadeirasScraper implements Bot {
 
-    private final ScraperProperties scraperProperties;
+    private final JsoupWrapper jsoupWrapper;
     private static final Logger log = LoggerFactory.getLogger(TratoresColheitadeirasScraper.class);
 
-    public TratoresColheitadeirasScraper(ScraperProperties scraperProperties) {
-        this.scraperProperties = scraperProperties;
+    public TratoresColheitadeirasScraper(JsoupWrapper jsoupWrapper) {
+        this.jsoupWrapper = jsoupWrapper;
     }
 
     @Override
     public Machine fetch(String url) {
         try {
-            Document document = Jsoup.connect(url).userAgent(scraperProperties.getUserAgent()).timeout(scraperProperties.getTimeout()).get();
+            Document document = jsoupWrapper.fetch(url);
 
             String model = Optional.ofNullable(document.selectFirst(".product-single__title")).map(Element::text).orElse(null);
             ContractType contractType = ContractType.SALE;
