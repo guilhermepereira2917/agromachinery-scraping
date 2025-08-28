@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.Optional;
 
+import static br.com.oystr.agromachinery.scraping.util.ImageConverter.convertImageToBase64;
+
 /**
  * A web scraper implementation for extracting machine details from
  * <a href="https://www.mercadomaquinas.com.br">Mercado Máquinas</a> advertisements.
@@ -65,7 +67,9 @@ public class MercadoMaquinasScraper implements Bot {
                 .map(e -> e.attr("abs:src"))
                 .orElse(null);
 
-            return new Machine(model, contractType, make, year, workedHours, city, price, photo, url);
+            String photoBase64 = convertImageToBase64(photo).orElse(null);
+
+            return new Machine(model, contractType, make, year, workedHours, city, price, photo, photoBase64, url);
         } catch (Exception e) {
             log.error("Error while processing URL {}", url, e);
 

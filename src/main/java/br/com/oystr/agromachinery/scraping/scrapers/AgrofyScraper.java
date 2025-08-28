@@ -16,6 +16,8 @@ import java.math.BigDecimal;
 import java.util.Iterator;
 import java.util.Optional;
 
+import static br.com.oystr.agromachinery.scraping.util.ImageConverter.convertImageToBase64;
+
 /**
  * Scraper implementation for <a href="https://www.agrofy.com.br">Agrofy</a> machinery listings.
  *
@@ -61,8 +63,9 @@ public class AgrofyScraper implements Bot {
             String city = product.path("localizacion").asText();
             BigDecimal price = BigDecimal.valueOf(product.path("price").asDouble());
             String photo = extractFirstImage(product);
+            String photoBase64 = convertImageToBase64(photo).orElse(null);
 
-            return new Machine(model, contractType, make, year, workedHours, city, price, photo, url);
+            return new Machine(model, contractType, make, year, workedHours, city, price, photo, photoBase64, url);
         } catch (Exception e) {
             log.error("Error while processing URL {}", url, e);
 
