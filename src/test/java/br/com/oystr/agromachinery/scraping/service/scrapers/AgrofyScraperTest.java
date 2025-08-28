@@ -25,15 +25,6 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.when;
 
-/**
- * Unit tests for {@link AgrofyScraper}.
- *
- * <p>
- * Tests the scraping logic for Agrofy product pages, including URL support
- * detection and parsing of product JSON data. Uses Mockito to mock Jsoup
- * HTTP calls and provide a mock JSON payload.
- * </p>
- */
 class AgrofyScraperTest {
     private JsoupWrapper jsoupWrapper;
     private AgrofyScraper agrofyScraper;
