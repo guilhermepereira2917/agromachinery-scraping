@@ -2,18 +2,22 @@ package br.com.oystr.agromachinery.scraping.scrapers;
 
 import br.com.oystr.agromachinery.scraping.model.ContractType;
 import br.com.oystr.agromachinery.scraping.model.Machine;
+import br.com.oystr.agromachinery.scraping.util.ImageConverter;
 import br.com.oystr.agromachinery.scraping.util.JsoupWrapper;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.when;
 
 class MercadoMaquinasScraperTest {
@@ -45,19 +49,22 @@ class MercadoMaquinasScraperTest {
         }
 
         when(jsoupWrapper.fetch(anyString())).thenReturn(fakeDocument);
+        try (MockedStatic<ImageConverter> mocked = mockStatic(ImageConverter.class)) {
+            mocked.when(() -> ImageConverter.convertImageToBase64(anyString())).thenReturn(Optional.of("fakeBase64"));
 
-        Machine machine = mercadoMaquinasScraper.fetch("www.mercadomaquinas.com.br/kombi");
+            Machine machine = mercadoMaquinasScraper.fetch("www.mercadomaquinas.com.br/kombi");
 
-        assertNotNull(machine);
+            assertNotNull(machine);
 
-        assertEquals("Kombi", machine.model());
-        assertEquals(ContractType.SALE, machine.contractType());
-        assertEquals("Volkswagen", machine.make());
-        assertEquals(2020, machine.year());
-        assertEquals(1200, machine.workedHours());
-        assertEquals("Curitiba", machine.city());
-        assertEquals(new BigDecimal("35000.0"), machine.price());
-        assertEquals("https://mercadomaquinas.com.br/kombi.jpg", machine.photo());
-        assertEquals("www.mercadomaquinas.com.br/kombi", machine.url());
+            assertEquals("Kombi", machine.model());
+            assertEquals(ContractType.SALE, machine.contractType());
+            assertEquals("Volkswagen", machine.make());
+            assertEquals(2020, machine.year());
+            assertEquals(1200, machine.workedHours());
+            assertEquals("Curitiba", machine.city());
+            assertEquals(new BigDecimal("35000.0"), machine.price());
+            assertEquals("https://mercadomaquinas.com.br/kombi.jpg", machine.photo());
+            assertEquals("www.mercadomaquinas.com.br/kombi", machine.url());
+        }
     }
 }

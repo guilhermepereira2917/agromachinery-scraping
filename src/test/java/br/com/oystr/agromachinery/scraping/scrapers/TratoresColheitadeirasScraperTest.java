@@ -2,18 +2,22 @@ package br.com.oystr.agromachinery.scraping.scrapers;
 
 import br.com.oystr.agromachinery.scraping.model.ContractType;
 import br.com.oystr.agromachinery.scraping.model.Machine;
+import br.com.oystr.agromachinery.scraping.util.ImageConverter;
 import br.com.oystr.agromachinery.scraping.util.JsoupWrapper;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.when;
 
 class TratoresColheitadeirasScraperTest {
@@ -45,19 +49,22 @@ class TratoresColheitadeirasScraperTest {
         }
 
         when(jsoupWrapper.fetch(anyString())).thenReturn(fakeDocument);
+        try (MockedStatic<ImageConverter> mocked = mockStatic(ImageConverter.class)) {
+            mocked.when(() -> ImageConverter.convertImageToBase64(anyString())).thenReturn(Optional.of("fakeBase64"));
 
-        Machine machine = tratoresColheitadeirasScraper.fetch("www.tratoresecolheitadeiras.com.br/colheitadeira");
+            Machine machine = tratoresColheitadeirasScraper.fetch("www.tratoresecolheitadeiras.com.br/colheitadeira");
 
-        assertNotNull(machine);
+            assertNotNull(machine);
 
-        assertEquals("Colheitadeira Modelo X", machine.model());
-        assertEquals(ContractType.SALE, machine.contractType());
-        assertEquals("John Deere", machine.make());
-        assertEquals(2023, machine.year());
-        assertEquals(120, machine.workedHours());
-        assertEquals("Erechim/RS", machine.city());
-        assertEquals(new BigDecimal("123456.78"), machine.price());
-        assertEquals("https://example.com/fake-image.jpg", machine.photo());
-        assertEquals("www.tratoresecolheitadeiras.com.br/colheitadeira", machine.url());
+            assertEquals("Colheitadeira Modelo X", machine.model());
+            assertEquals(ContractType.SALE, machine.contractType());
+            assertEquals("John Deere", machine.make());
+            assertEquals(2023, machine.year());
+            assertEquals(120, machine.workedHours());
+            assertEquals("Erechim/RS", machine.city());
+            assertEquals(new BigDecimal("123456.78"), machine.price());
+            assertEquals("https://example.com/fake-image.jpg", machine.photo());
+            assertEquals("www.tratoresecolheitadeiras.com.br/colheitadeira", machine.url());
+        }
     }
 }
