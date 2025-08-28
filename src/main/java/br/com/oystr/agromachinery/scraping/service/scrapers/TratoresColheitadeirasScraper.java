@@ -1,4 +1,4 @@
-package br.com.oystr.agromachinery.scraping.scrapers;
+package br.com.oystr.agromachinery.scraping.service.scrapers;
 
 import br.com.oystr.agromachinery.scraping.bot.Bot;
 import br.com.oystr.agromachinery.scraping.exceptions.MachineNotFoundException;

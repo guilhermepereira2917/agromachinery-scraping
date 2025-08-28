@@ -1,8 +1,9 @@
-package br.com.oystr.agromachinery.scraping.scrapers;
+package br.com.oystr.agromachinery.scraping.service.scrapers;
 
 import br.com.oystr.agromachinery.scraping.exceptions.MachineNotFoundException;
 import br.com.oystr.agromachinery.scraping.model.ContractType;
 import br.com.oystr.agromachinery.scraping.model.Machine;
+import br.com.oystr.agromachinery.scraping.service.scrapers.TratoresColheitadeirasScraper;
 import br.com.oystr.agromachinery.scraping.util.ImageConverter;
 import br.com.oystr.agromachinery.scraping.util.JsoupWrapper;
 import org.jsoup.nodes.Document;
