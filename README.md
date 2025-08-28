@@ -88,6 +88,16 @@ Tests are written using JUnit 5 and Mockito for mocking dependencies.
 When the scraper runs, it logs each fetched machine. Example:
 ```console
 INFO  --- Executor service shutdown initiated...
-INFO  --- Fetched machine: Machine{model='GTS FLEXER XS 45 2025/2025', contractType=SALE, make='GTS', year=2025, workedHours=1168, city='UBERLANDIA/MG', price=null, photo='https://images...jpeg', url='https://www.tratoresecolheitadeiras.com.br/...'}
-INFO  --- Fetched machine: Machine{model='Trator John Deere 8320R', contractType=SALE, make='John Deere', year=2010, workedHours=null, city='Maracaju, Mato Grosso do Sul', price=850000.0, photo='https://images...png', url='https://www.agrofy.com.br/...'}
+INFO  --- Fetched machine: Machine {
+  model='JOHN DEERE S550 2022/2022',
+  contractType=SALE,
+  make='JOHN DEERE',
+  year=2022,
+  workedHours=1168,
+  city='FERNANDOPOLIS/SP',
+  price=R$ 1.380.000,00,
+  photo='https://d36qmzp7jiean8.cloudfront.net/cliente_009472/veiculos/1279673_whatsapp%20image%202025-07-19%20at%2013.01.30_big.webp?r=B6JS7hzFIUGbSVfAuGKZJA',
+  photoBase64='data:image/png;base64,UklGRgBSIgBXRUJQVlA4TPRRIgAv/0...',
+  url='https://www.tratoresecolheitadeiras.com.br/veiculo/fernandopolis/sp/colheitadeira/john-deere/john-deere-s550/2022/-rotor-axial/cabine-cabinado/agro-novaes-maquinas-agricolas/1279673'
+}
 ```
