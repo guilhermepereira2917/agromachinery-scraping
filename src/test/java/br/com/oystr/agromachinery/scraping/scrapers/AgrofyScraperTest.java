@@ -1,21 +1,24 @@
 package br.com.oystr.agromachinery.scraping.scrapers;
 
+import br.com.oystr.agromachinery.scraping.exceptions.MachineNotFoundException;
 import br.com.oystr.agromachinery.scraping.model.ContractType;
 import br.com.oystr.agromachinery.scraping.model.Machine;
 import br.com.oystr.agromachinery.scraping.util.ImageConverter;
 import br.com.oystr.agromachinery.scraping.util.JsoupWrapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
+import org.springframework.boot.test.system.CapturedOutput;
+import org.springframework.boot.test.system.OutputCaptureExtension;
 
 import java.math.BigDecimal;
-import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
+import static br.com.oystr.agromachinery.scraping.testutils.TestHtmlFileLoader.loadDocument;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mockStatic;
@@ -50,17 +53,9 @@ class AgrofyScraperTest {
 
     @Test
     void fetch_givenMockHtml_shouldReturnCorrectMachine() throws Exception {
-        final String mockHtmlFileName = "tests/mock_agrofy_product.html";
-        Document mockHtml;
-        try (var is = getClass().getClassLoader().getResourceAsStream(mockHtmlFileName)) {
-            if (is == null) {
-                fail("Test HTML '%s' file not found!".formatted(mockHtmlFileName));
-            }
-
-            mockHtml = Jsoup.parse(is, StandardCharsets.UTF_8.name(), mockHtmlFileName);
-        }
-
+        Document mockHtml = loadDocument("mock_agrofy_product.html");
         when(jsoupWrapper.fetch("https://www.agrofy.com.br/tractor")).thenReturn(mockHtml);
+
         try (MockedStatic<ImageConverter> mocked = mockStatic(ImageConverter.class)) {
             mocked.when(() -> ImageConverter.convertImageToBase64(anyString())).thenReturn(Optional.of("mockBase64"));
 
@@ -77,5 +72,17 @@ class AgrofyScraperTest {
             assertEquals("url.jpg", machine.photo());
             assertEquals("https://www.agrofy.com.br/tractor", machine.url());
         }
+    }
+
+    @Test
+    @ExtendWith(OutputCaptureExtension.class)
+    void fetch_givenMockNonListedHtml_shouldReturnNull(CapturedOutput output) throws Exception {
+        Document mockHtml = loadDocument("mock_agrofy_product_nonlisted.html");
+        when(jsoupWrapper.fetch("https://www.agrofy.com.br/tractor")).thenReturn(mockHtml);
+
+        Machine machine = agrofyScraper.fetch("https://www.agrofy.com.br/tractor");
+
+        assertNull(machine);
+        assertTrue(output.getAll().contains(MachineNotFoundException.class.getName()));
     }
 }

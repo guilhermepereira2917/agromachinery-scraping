@@ -1,20 +1,24 @@
 package br.com.oystr.agromachinery.scraping.scrapers;
 
+import br.com.oystr.agromachinery.scraping.exceptions.MachineNotFoundException;
 import br.com.oystr.agromachinery.scraping.model.ContractType;
 import br.com.oystr.agromachinery.scraping.model.Machine;
 import br.com.oystr.agromachinery.scraping.util.ImageConverter;
 import br.com.oystr.agromachinery.scraping.util.JsoupWrapper;
-import org.jsoup.Jsoup;
+import org.jsoup.HttpStatusException;
 import org.jsoup.nodes.Document;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
+import org.springframework.boot.test.system.CapturedOutput;
+import org.springframework.boot.test.system.OutputCaptureExtension;
 
 import java.math.BigDecimal;
-import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
+import static br.com.oystr.agromachinery.scraping.testutils.TestHtmlFileLoader.loadDocument;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mockStatic;
@@ -38,17 +42,9 @@ class MercadoMaquinasScraperTest {
 
     @Test
     void fetch_givenMockHtml_shouldReturnCorrectMachine() throws Exception {
-        final String mockHtmlFileName = "tests/mock_mercadomaquinas_product.html";
-        Document mockDocument;
-        try (var is = getClass().getClassLoader().getResourceAsStream(mockHtmlFileName)) {
-            if (is == null) {
-                fail("Test HTML '%s' file not found!".formatted(mockHtmlFileName));
-            }
+        Document mockHtml = loadDocument("mock_mercadomaquinas_product.html");
+        when(jsoupWrapper.fetch(anyString())).thenReturn(mockHtml);
 
-            mockDocument = Jsoup.parse(is, StandardCharsets.UTF_8.name(), mockHtmlFileName);
-        }
-
-        when(jsoupWrapper.fetch(anyString())).thenReturn(mockDocument);
         try (MockedStatic<ImageConverter> mocked = mockStatic(ImageConverter.class)) {
             mocked.when(() -> ImageConverter.convertImageToBase64(anyString())).thenReturn(Optional.of("mockBase64"));
 
@@ -66,5 +62,19 @@ class MercadoMaquinasScraperTest {
             assertEquals("https://mercadomaquinas.com.br/kombi.jpg", machine.photo());
             assertEquals("www.mercadomaquinas.com.br/kombi", machine.url());
         }
+    }
+
+    @Test
+    @ExtendWith(OutputCaptureExtension.class)
+    void fetch_givenHttpStatusError404_shouldReturnNull(CapturedOutput output) throws Exception {
+        final String fetchUrl = "www.tratoresecolheitadeiras.com.br/colheitadeira";
+
+        when(jsoupWrapper.fetch(anyString()))
+            .thenThrow(new HttpStatusException("Not Found 404", 404, fetchUrl));
+
+        Machine machine = mercadoMaquinasScraper.fetch(fetchUrl);
+
+        assertNull(machine);
+        assertTrue(output.getAll().contains(MachineNotFoundException.class.getName()));
     }
 }
