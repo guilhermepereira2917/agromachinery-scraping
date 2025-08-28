@@ -68,7 +68,7 @@ class MercadoMaquinasScraperTest {
     @Test
     @ExtendWith(OutputCaptureExtension.class)
     void fetch_givenHttpStatusError404_shouldReturnNull(CapturedOutput output) throws Exception {
-        final String fetchUrl = "www.tratoresecolheitadeiras.com.br/colheitadeira";
+        final String fetchUrl = "www.mercadomaquinas.com.br/kombi";
 
         when(jsoupWrapper.fetch(anyString()))
             .thenThrow(new HttpStatusException("Not Found 404", 404, fetchUrl));
