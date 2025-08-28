@@ -37,20 +37,20 @@ class MercadoMaquinasScraperTest {
     }
 
     @Test
-    void fetch_givenFakeHtml_shouldReturnCorrectMachine() throws Exception {
-        final String fakeHtmlFileName = "tests/fake_mercadomaquinas_product.html";
-        Document fakeDocument;
-        try (var is = getClass().getClassLoader().getResourceAsStream(fakeHtmlFileName)) {
+    void fetch_givenMockHtml_shouldReturnCorrectMachine() throws Exception {
+        final String mockHtmlFileName = "tests/mock_mercadomaquinas_product.html";
+        Document mockDocument;
+        try (var is = getClass().getClassLoader().getResourceAsStream(mockHtmlFileName)) {
             if (is == null) {
-                fail("Test HTML '%s' file not found!".formatted(fakeHtmlFileName));
+                fail("Test HTML '%s' file not found!".formatted(mockHtmlFileName));
             }
 
-            fakeDocument = Jsoup.parse(is, StandardCharsets.UTF_8.name(), fakeHtmlFileName);
+            mockDocument = Jsoup.parse(is, StandardCharsets.UTF_8.name(), mockHtmlFileName);
         }
 
-        when(jsoupWrapper.fetch(anyString())).thenReturn(fakeDocument);
+        when(jsoupWrapper.fetch(anyString())).thenReturn(mockDocument);
         try (MockedStatic<ImageConverter> mocked = mockStatic(ImageConverter.class)) {
-            mocked.when(() -> ImageConverter.convertImageToBase64(anyString())).thenReturn(Optional.of("fakeBase64"));
+            mocked.when(() -> ImageConverter.convertImageToBase64(anyString())).thenReturn(Optional.of("mockBase64"));
 
             Machine machine = mercadoMaquinasScraper.fetch("www.mercadomaquinas.com.br/kombi");
 

@@ -7,7 +7,6 @@ import br.com.oystr.agromachinery.scraping.util.JsoupWrapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
@@ -28,7 +27,7 @@ import static org.mockito.Mockito.when;
  * <p>
  * Tests the scraping logic for Agrofy product pages, including URL support
  * detection and parsing of product JSON data. Uses Mockito to mock Jsoup
- * HTTP calls and provide a fake JSON payload.
+ * HTTP calls and provide a mock JSON payload.
  * </p>
  */
 class AgrofyScraperTest {
@@ -50,8 +49,8 @@ class AgrofyScraperTest {
     }
 
     @Test
-    void fetch_givenFakeHtml_shouldReturnCorrectMachine() throws Exception {
-        final String mockHtmlFileName = "tests/fake_agrofy_product.html";
+    void fetch_givenMockHtml_shouldReturnCorrectMachine() throws Exception {
+        final String mockHtmlFileName = "tests/mock_agrofy_product.html";
         Document mockHtml;
         try (var is = getClass().getClassLoader().getResourceAsStream(mockHtmlFileName)) {
             if (is == null) {
@@ -63,7 +62,7 @@ class AgrofyScraperTest {
 
         when(jsoupWrapper.fetch("https://www.agrofy.com.br/tractor")).thenReturn(mockHtml);
         try (MockedStatic<ImageConverter> mocked = mockStatic(ImageConverter.class)) {
-            mocked.when(() -> ImageConverter.convertImageToBase64(anyString())).thenReturn(Optional.of("fakeBase64"));
+            mocked.when(() -> ImageConverter.convertImageToBase64(anyString())).thenReturn(Optional.of("mockBase64"));
 
             Machine machine = agrofyScraper.fetch("https://www.agrofy.com.br/tractor");
 
