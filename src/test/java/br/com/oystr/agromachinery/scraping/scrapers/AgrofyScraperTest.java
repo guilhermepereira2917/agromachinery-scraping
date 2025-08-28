@@ -65,14 +65,14 @@ class AgrofyScraperTest {
         Machine machine = agrofyScraper.fetch("https://www.agrofy.com.br/tractor");
 
         assertNotNull(machine);
-        assertEquals("Trator Magnum", machine.getModel());
-        assertEquals(ContractType.SALE, machine.getContractType());
-        assertEquals("John Deere", machine.getMake());
-        assertEquals(2022, machine.getYear());
-        assertEquals(120, machine.getWorkedHours());
-        assertEquals("Erechim", machine.getCity());
-        assertEquals(new BigDecimal("12345.67"), machine.getPrice());
-        assertEquals("url.jpg", machine.getPhoto());
-        assertEquals("https://www.agrofy.com.br/tractor", machine.getUrl());
+        assertEquals("Trator Magnum", machine.model());
+        assertEquals(ContractType.SALE, machine.contractType());
+        assertEquals("John Deere", machine.make());
+        assertEquals(2022, machine.year());
+        assertEquals(120, machine.workedHours());
+        assertEquals("Erechim", machine.city());
+        assertEquals(new BigDecimal("12345.67"), machine.price());
+        assertEquals("url.jpg", machine.photo());
+        assertEquals("https://www.agrofy.com.br/tractor", machine.url());
     }
 }

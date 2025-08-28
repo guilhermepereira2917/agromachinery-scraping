@@ -50,14 +50,14 @@ class MercadoMaquinasScraperTest {
 
         assertNotNull(machine);
 
-        assertEquals("Kombi", machine.getModel());
-        assertEquals(ContractType.SALE, machine.getContractType());
-        assertEquals("Volkswagen", machine.getMake());
-        assertEquals(2020, machine.getYear());
-        assertEquals(1200, machine.getWorkedHours());
-        assertEquals("Curitiba", machine.getCity());
-        assertEquals(new BigDecimal("35000.0"), machine.getPrice());
-        assertEquals("https://mercadomaquinas.com.br/kombi.jpg", machine.getPhoto());
-        assertEquals("www.mercadomaquinas.com.br/kombi", machine.getUrl());
+        assertEquals("Kombi", machine.model());
+        assertEquals(ContractType.SALE, machine.contractType());
+        assertEquals("Volkswagen", machine.make());
+        assertEquals(2020, machine.year());
+        assertEquals(1200, machine.workedHours());
+        assertEquals("Curitiba", machine.city());
+        assertEquals(new BigDecimal("35000.0"), machine.price());
+        assertEquals("https://mercadomaquinas.com.br/kombi.jpg", machine.photo());
+        assertEquals("www.mercadomaquinas.com.br/kombi", machine.url());
     }
 }

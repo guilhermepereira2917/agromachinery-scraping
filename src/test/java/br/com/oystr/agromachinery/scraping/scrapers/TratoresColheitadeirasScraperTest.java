@@ -50,14 +50,14 @@ class TratoresColheitadeirasScraperTest {
 
         assertNotNull(machine);
 
-        assertEquals("Colheitadeira Modelo X", machine.getModel());
-        assertEquals(ContractType.SALE, machine.getContractType());
-        assertEquals("John Deere", machine.getMake());
-        assertEquals(2023, machine.getYear());
-        assertEquals(120, machine.getWorkedHours());
-        assertEquals("Erechim/RS", machine.getCity());
-        assertEquals(new BigDecimal("123456.78"), machine.getPrice());
-        assertEquals("https://example.com/fake-image.jpg", machine.getPhoto());
-        assertEquals("www.tratoresecolheitadeiras.com.br/colheitadeira", machine.getUrl());
+        assertEquals("Colheitadeira Modelo X", machine.model());
+        assertEquals(ContractType.SALE, machine.contractType());
+        assertEquals("John Deere", machine.make());
+        assertEquals(2023, machine.year());
+        assertEquals(120, machine.workedHours());
+        assertEquals("Erechim/RS", machine.city());
+        assertEquals(new BigDecimal("123456.78"), machine.price());
+        assertEquals("https://example.com/fake-image.jpg", machine.photo());
+        assertEquals("www.tratoresecolheitadeiras.com.br/colheitadeira", machine.url());
     }
 }
