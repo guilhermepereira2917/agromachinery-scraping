@@ -5,6 +5,7 @@ import br.com.oystr.agromachinery.scraping.model.Machine;
 import br.com.oystr.agromachinery.scraping.util.ImageConverter;
 import br.com.oystr.agromachinery.scraping.util.JsoupWrapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.junit.jupiter.api.BeforeEach;
@@ -49,23 +50,18 @@ class AgrofyScraperTest {
     }
 
     @Test
-    void fetch_givenFakeJson_shouldReturnCorrectMachine() throws Exception {
-        final String fakeJsonFileName = "tests/fake_agrofy_product.json";
-        String mockJson;
-        try (var is = getClass().getClassLoader().getResourceAsStream(fakeJsonFileName)) {
+    void fetch_givenFakeHtml_shouldReturnCorrectMachine() throws Exception {
+        final String mockHtmlFileName = "tests/fake_agrofy_product.html";
+        Document mockHtml;
+        try (var is = getClass().getClassLoader().getResourceAsStream(mockHtmlFileName)) {
             if (is == null) {
-                fail("Test JSON '%s' file not found!".formatted(fakeJsonFileName));
+                fail("Test HTML '%s' file not found!".formatted(mockHtmlFileName));
             }
 
-            mockJson = new String(is.readAllBytes(), StandardCharsets.UTF_8);
+            mockHtml = Jsoup.parse(is, StandardCharsets.UTF_8.name(), mockHtmlFileName);
         }
 
-        Document mockDocument = Mockito.mock(Document.class);
-        Element mockScript = Mockito.mock(Element.class);
-
-        when(jsoupWrapper.fetch("https://www.agrofy.com.br/tractor")).thenReturn(mockDocument);
-        when(mockDocument.selectFirst("script#__NEXT_DATA__")).thenReturn(mockScript);
-        when(mockScript.html()).thenReturn(mockJson);
+        when(jsoupWrapper.fetch("https://www.agrofy.com.br/tractor")).thenReturn(mockHtml);
         try (MockedStatic<ImageConverter> mocked = mockStatic(ImageConverter.class)) {
             mocked.when(() -> ImageConverter.convertImageToBase64(anyString())).thenReturn(Optional.of("fakeBase64"));
 
