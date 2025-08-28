@@ -27,17 +27,13 @@ class TratoresColheitadeirasScraperTest {
     }
 
     @Test
-    void testSupports() {
+    void supports_givenUrl_returnsCorrectBoolean() {
         assertTrue(tratoresColheitadeirasScraper.supports("https://www.tratoresecolheitadeiras.com.br/..."));
         assertFalse(tratoresColheitadeirasScraper.supports("https://www.agrofy.com.br/..."));
     }
 
-    /**
-     * Tests the fetch method using a fake HTML file.
-     * Ensures all fields of {@link Machine} are parsed correctly.
-     */
     @Test
-    void testFetch() throws Exception {
+    void fetch_givenFakeHtml_shouldReturnCorrectMachine() throws Exception {
         final String fakeHtmlFileName = "tests/fake_tratoresecolheitadeiras_product.html";
         Document fakeDocument;
         try (var is = getClass().getClassLoader().getResourceAsStream(fakeHtmlFileName)) {

@@ -38,17 +38,13 @@ class AgrofyScraperTest {
     }
 
     @Test
-    void testSupports() {
+    void supports_givenUrl_returnsCorrectBoolean() {
         assertTrue(agrofyScraper.supports("https://www.agrofy.com.br/..."));
         assertFalse(agrofyScraper.supports("https://www.mercadomaquinas.com.br/..."));
     }
 
-    /**
-     * Tests the fetch method using a fake JSON file.
-     * Ensures all fields of {@link Machine} are parsed correctly.
-     */
     @Test
-    void testFetch() throws Exception {
+    void fetch_givenFakeJson_shouldReturnCorrectMachine() throws Exception {
         final String fakeJsonFileName = "tests/fake_agrofy_product.json";
         String mockJson;
         try (var is = getClass().getClassLoader().getResourceAsStream(fakeJsonFileName)) {
