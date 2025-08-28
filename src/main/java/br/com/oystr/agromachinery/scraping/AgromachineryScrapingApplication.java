@@ -3,6 +3,8 @@ package br.com.oystr.agromachinery.scraping;
 import br.com.oystr.agromachinery.scraping.bot.BotFactory;
 import br.com.oystr.agromachinery.scraping.model.Machine;
 import br.com.oystr.agromachinery.scraping.service.ScraperService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -34,6 +36,8 @@ public class AgromachineryScrapingApplication {
     @Value("${scraper.urls}")
     private List<String> urls;
 
+    private static final Logger log = LoggerFactory.getLogger(AgromachineryScrapingApplication.class);
+
     public AgromachineryScrapingApplication(ScraperService scraperService) {
         this.scraperService = scraperService;
     }
@@ -45,7 +49,8 @@ public class AgromachineryScrapingApplication {
     @Bean
     CommandLineRunner run() {
         return args -> {
-            scraperService.scrape(urls);
+            List<Machine> machines = scraperService.scrape(urls);
+            log.info("Successfully fetched {} machines.", machines.size());
         };
     }
 }

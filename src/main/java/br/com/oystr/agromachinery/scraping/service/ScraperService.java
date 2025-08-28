@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -40,6 +42,7 @@ public class ScraperService {
 
     /**
      * Starts scraping machinery data from the provided list of URLs.
+     *
      * <p>
      * Each URL is processed in a separate thread from a fixed-size thread pool.
      * The service will wait for a maximum of {@code awaitTerminationSeconds} for
@@ -48,8 +51,13 @@ public class ScraperService {
      * </p>
      *
      * @param urls List of URLs to scrape machinery data from
+     * @return A list of {@link Machine} objects representing the successfully
+     *         fetched machines. URLs that could not be scraped (e.g., scraper
+     *         not found or fetch error) are not included in the list.
      */
-    public void scrape(List<String> urls) {
+    public List<Machine> scrape(List<String> urls) {
+        List<Machine> machines = Collections.synchronizedList(new ArrayList<>());
+
         try (ExecutorService executorService = Executors.newFixedThreadPool(threadsCount)) {
             for (String url : urls) {
                 executorService.submit(() ->
@@ -57,6 +65,7 @@ public class ScraperService {
                         robot -> {
                             Machine machine = robot.fetch(url);
                             if (machine != null) {
+                                machines.add(machine);
                                 log.info("Fetched machine: {}", machine);
                             }
                         },
@@ -80,5 +89,7 @@ public class ScraperService {
                 executorService.shutdownNow();
             }
         }
+
+        return new ArrayList<>(machines);
     }
 }
