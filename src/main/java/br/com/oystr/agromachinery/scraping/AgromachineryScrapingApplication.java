@@ -63,7 +63,9 @@ public class AgromachineryScrapingApplication {
                         botFactory.getRobot(url).ifPresentOrElse(
                             robot -> {
                                 Machine machine = robot.fetch(url);
-                                log.info("Fetched machine: {}", machine);
+                                if (machine != null) {
+                                    log.info("Fetched machine: {}", machine);
+                                }
                             },
                             () -> log.warn("No scraper found for URL: {}", url)
                         )

@@ -1,10 +1,12 @@
 package br.com.oystr.agromachinery.scraping.scrapers;
 
 import br.com.oystr.agromachinery.scraping.bot.Bot;
+import br.com.oystr.agromachinery.scraping.exceptions.MachineNotFoundException;
 import br.com.oystr.agromachinery.scraping.model.ContractType;
 import br.com.oystr.agromachinery.scraping.model.Machine;
 import br.com.oystr.agromachinery.scraping.util.JsoupWrapper;
 import br.com.oystr.agromachinery.scraping.util.PriceParser;
+import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -12,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Optional;
 
@@ -43,7 +46,7 @@ public class MercadoMaquinasScraper implements Bot {
     @Override
     public Machine fetch(String url) {
         try {
-            Document document = jsoupWrapper.fetch(url);
+            Document document = fetchDocument(url);
 
             String model = Optional.ofNullable(document.selectFirst("h1.title")).map(Element::text).orElse(null);
             ContractType contractType = ContractType.SALE;
@@ -86,5 +89,17 @@ public class MercadoMaquinasScraper implements Bot {
         String cssSelector = "li.item:has(span.item-name:containsOwn(%s:)) span.item-value".formatted(label);
 
         return Optional.ofNullable(document.selectFirst(cssSelector)).map(Element::text);
+    }
+
+    private Document fetchDocument(String url) throws IOException {
+        try {
+            return jsoupWrapper.fetch(url);
+        } catch (HttpStatusException e) {
+            if (e.getStatusCode() == 404) {
+                throw new MachineNotFoundException("Machine not found on URL: " + url);
+            }
+
+            throw e;
+        }
     }
 }

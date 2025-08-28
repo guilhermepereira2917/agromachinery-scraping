@@ -1,6 +1,7 @@
 package br.com.oystr.agromachinery.scraping.scrapers;
 
 import br.com.oystr.agromachinery.scraping.bot.Bot;
+import br.com.oystr.agromachinery.scraping.exceptions.MachineNotFoundException;
 import br.com.oystr.agromachinery.scraping.model.ContractType;
 import br.com.oystr.agromachinery.scraping.model.Machine;
 import br.com.oystr.agromachinery.scraping.util.JsoupWrapper;
@@ -46,6 +47,10 @@ public class TratoresColheitadeirasScraper implements Bot {
     public Machine fetch(String url) {
         try {
             Document document = jsoupWrapper.fetch(url);
+
+            if (document.selectFirst("h1:contains(Esse veículo já foi vendido.)") != null) {
+                throw new MachineNotFoundException("Machine not found on URL: " + url);
+            }
 
             String model = Optional.ofNullable(document.selectFirst(".product-single__title"))
                 .map(Element::text)

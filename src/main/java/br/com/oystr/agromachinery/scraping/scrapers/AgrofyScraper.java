@@ -1,8 +1,9 @@
 package br.com.oystr.agromachinery.scraping.scrapers;
 
+import br.com.oystr.agromachinery.scraping.bot.Bot;
+import br.com.oystr.agromachinery.scraping.exceptions.MachineNotFoundException;
 import br.com.oystr.agromachinery.scraping.model.ContractType;
 import br.com.oystr.agromachinery.scraping.model.Machine;
-import br.com.oystr.agromachinery.scraping.bot.Bot;
 import br.com.oystr.agromachinery.scraping.util.JsoupWrapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -47,6 +48,11 @@ public class AgrofyScraper implements Bot {
     public Machine fetch(String url) {
         try {
             Document document = jsoupWrapper.fetch(url);
+
+            if (document.selectFirst("span[data-cy='title']:contains(A publicação está finalizada.)") != null) {
+                throw new MachineNotFoundException("Machine not found on URL: " + url);
+            }
+
             Element scriptTag = document.selectFirst("script#__NEXT_DATA__");
             String json = scriptTag.html();
 
